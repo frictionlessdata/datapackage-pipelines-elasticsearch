@@ -1,0 +1,42 @@
+sudo:
+  required
+
+dist:
+  trusty
+
+services:
+  - elasticsearch
+
+addons:
+  postgresql: "9.4"
+  apt:
+    packages:
+      - pandoc
+
+language:
+  python
+
+python:
+  - 3.6
+
+env:
+  global:
+    - TOXENV="py${PYTHON_VERSION//./}"
+
+install:
+  - make install
+  - pip install coveralls
+
+before_script:
+  - sleep 10
+
+script:
+  - make test
+
+after_success:
+  - coveralls
+
+before_deploy:
+  - pandoc --version
+  - pandoc -f markdown_github -t rst -o README.rst README.md
+  - mv README.rst README.md
