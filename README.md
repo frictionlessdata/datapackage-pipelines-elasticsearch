@@ -22,7 +22,7 @@ You can use datapackage-pipelines-elasticsearch as a plugin for (dpp)[https://gi
   - run: elasticseach.dump.to_index
 ```
 
-### ***`dump.to_sql`***
+### ***`dump.to_index`***
 
 Saves the datapackage to an ElasticSearch instance.
 
