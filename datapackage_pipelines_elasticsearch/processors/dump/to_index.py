@@ -58,10 +58,10 @@ class ESDumper(DumperBase):
 
     def handle_resource(self, resource, spec, parameters, datapackage):
         resource_name = spec['name']
-        primary_key = spec['schema']['primaryKey']
         if resource_name not in self.converted_resources:
             return resource
         else:
+            primary_key = spec['schema']['primaryKey']
             converted_resource = self.converted_resources[resource_name]
             index_name = converted_resource['index-name']
             doc_type = converted_resource['doc-type']
