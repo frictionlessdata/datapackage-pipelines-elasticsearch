@@ -29,8 +29,9 @@ def normalize(obj):
 
 class ESDumper(DumperBase):
 
-    def __init__(self):
+    def __init__(self, mapper_cls=None):
         super(ESDumper, self).__init__()
+        self.mapper_cls = mapper_cls
 
     def initialize(self, parameters):
         super(ESDumper, self).initialize(parameters)
@@ -66,7 +67,8 @@ class ESDumper(DumperBase):
             index_name = converted_resource['index-name']
             doc_type = converted_resource['doc-type']
             storage = Storage(self.engine)
-            storage.create(index_name, [(doc_type, spec['schema'])], always_recreate=False)
+            storage.create(index_name, [(doc_type, spec['schema'])],
+                           always_recreate=False, mapping_generator_cls=self.mapper_cls)
             logging.info('Writing to ES %s -> %s/%s',
                          resource_name, index_name, doc_type)
 
@@ -78,4 +80,5 @@ class ESDumper(DumperBase):
                                  primary_key, as_generator=True)
 
 
-ESDumper()()
+if __name__ == '__main__':
+    ESDumper()()
