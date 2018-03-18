@@ -68,7 +68,8 @@ class ESDumper(DumperBase):
             doc_type = converted_resource['doc-type']
             storage = Storage(self.engine)
             storage.create(index_name, [(doc_type, spec['schema'])],
-                           always_recreate=False, mapping_generator_cls=self.mapper_cls)
+                           always_recreate=False, reindex=True,
+                           mapping_generator_cls=self.mapper_cls)
             logging.info('Writing to ES %s -> %s/%s',
                          resource_name, index_name, doc_type)
 
