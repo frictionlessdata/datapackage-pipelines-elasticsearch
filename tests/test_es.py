@@ -50,8 +50,8 @@ class TestToIndexProcessor(unittest.TestCase):
         }
         # Path to the processor we want to test
         self.processor_dir = \
-            os.path.dirname(datapackage_pipelines_elasticsearch.processors.__file__)
-        self.processor_path = os.path.join(self.processor_dir, 'dump', 'to_index.py')
+            os.path.dirname(__file__)
+        self.processor_path = os.path.join(self.processor_dir, 'dummy_processor.py')
 
     def test_index(self):
         # Should be in setup but requires mock
@@ -62,15 +62,16 @@ class TestToIndexProcessor(unittest.TestCase):
         res.spec = self.resources[0]
         res_iter = [res]
 
-        spew_args, _ = mock_processor_test(self.processor_path,
-                                           (self.params,
-                                            self.datapackage,
-                                            res_iter))
+        spew_args = mock_processor_test(self.processor_path,
+                                        (self.params,
+                                         self.datapackage,
+                                         res_iter))
 
-        spew_res_iter = spew_args[1]
+        spew_res_iter = spew_args[0][1]
         # We need to actually read the rows to execute the iterator(s)
         rows = [list(res) for res in spew_res_iter]
 
+        Elasticsearch().indices.flush()
         records = Elasticsearch().search(index='dummy')
         records = [r['_source'] for r in records['hits']['hits']]
 

@@ -19,7 +19,7 @@ PACKAGE = 'datapackage_pipelines_elasticsearch'
 NAME = PACKAGE.replace('_', '-')
 INSTALL_REQUIRES = [
     'datapackage-pipelines>=1.1.1',
-    'tableschema-elasticsearch>=0.1.2',
+    'tableschema-elasticsearch>=0.2.0',
 ]
 TESTS_REQUIRE = [
     'pylama',
