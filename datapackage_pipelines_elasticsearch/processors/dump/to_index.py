@@ -37,6 +37,7 @@ class ESDumper(DumperBase):
     def initialize(self, parameters):
         super(ESDumper, self).initialize(parameters)
         self.index_to_resource = parameters['indexes']
+        self.reindex = parameters.get('reindex', True)
         engine = parameters.get('engine', 'env://DPP_ELASTICSEARCH')
         if engine.startswith('env://'):
             env_var = engine[6:]
@@ -69,7 +70,7 @@ class ESDumper(DumperBase):
             doc_type = converted_resource['doc-type']
             storage = Storage(self.engine)
             storage.create(index_name, [(doc_type, spec['schema'])],
-                           always_recreate=False, reindex=True,
+                           always_recreate=False, reindex=self.reindex,
                            mapping_generator_cls=self.mapper_cls,
                            index_settings=self.index_settings)
             logging.info('Writing to ES %s -> %s/%s',
