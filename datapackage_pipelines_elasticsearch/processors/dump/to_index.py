@@ -69,12 +69,12 @@ class ESDumper(DumperBase):
             index_name = converted_resource['index-name']
             doc_type = converted_resource['doc-type']
             storage = Storage(self.engine)
+            logging.info('Writing to ES %s -> %s/%s (reindex: %s)',
+                         resource_name, index_name, doc_type, self.reindex)
             storage.create(index_name, [(doc_type, spec['schema'])],
                            always_recreate=False, reindex=self.reindex,
                            mapping_generator_cls=self.mapper_cls,
                            index_settings=self.index_settings)
-            logging.info('Writing to ES %s -> %s/%s',
-                         resource_name, index_name, doc_type)
 
             def normalizer(rows):
                 for row in rows:
