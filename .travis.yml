@@ -1,42 +1,37 @@
-sudo:
-  required
-
-dist:
-  trusty
-
+sudo: required
+dist: trusty
 services:
-  - elasticsearch
-
+- elasticsearch
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
   apt:
     packages:
-      - pandoc
-
-language:
-  python
-
+    - pandoc
+language: python
 python:
-  - 3.6
-
+- 3.6
 env:
   global:
-    - TOXENV="py${PYTHON_VERSION//./}"
-
+  - TOXENV="py${PYTHON_VERSION//./}"
 install:
-  - make install
-  - pip install coveralls
-
+- make install
+- pip install coveralls
 before_script:
-  - sleep 10
-
+- sleep 10
 script:
-  - make test
-
+- make test
 after_success:
-  - coveralls
-
+- coveralls
 before_deploy:
-  - pandoc --version
-  - pandoc -f markdown_github -t rst -o README.rst README.md
-  - mv README.rst README.md
+- pandoc --version
+- pandoc -f markdown_github -t rst -o README.rst README.md
+- mv README.rst README.md
+deploy:
+  provider: pypi
+  user: akariv
+  distributions: sdist bdist_wheel
+  skip_cleanup: true
+  on:
+    tags: true
+  password:
+    secure: QZCRjU37CPb96r4E0yBHB/0NVef0kmDgiyXlovZOT51T1yohQm2lBfnj5mt53paJK1541VhbJ1U0cE89bBcu/FchSYvlZCLeVIwVKDpBtIi8xr3fW2vR0hPqqjdbz5EzBtmlODf3hhOLz3s3GYMMbo6422Yltme8XiWJHnkYDozdX4Z/355fZTQQ7HsiKl2cNkiYXSUWYXY8hfPbjbDmQG/4HQKGbn0dV6OeuJnViRbcHYvBqGuDFMjsVkZCwr0Mcdnu1x2DPPypGiEUByNF/6C4gKWbiS0LLNxyDsRPQCDrNB6z2YYE2s8QNsb20Fnw5xUWI4NdJPxPyDXJAmpn3U6kpLtZIfAmTwxl+ktgpTtuPNuCnjUb+fcHwxcWIOVjXxalHhKAqFMpf4oJHgZYmpmFksQDc4Xo9a4v0+B/HLJCL7+PpDTqZsLrbxlFec+N/1+qnGle5KQ5VH7T0hC2fkc5Dp/Q2p2oGK4idEyEkQIRcXroUNjcaXje6/dw+Z7Z5e86BR5rBDSl/TAO3ov/HEmVj1ZDDnQttQfTBwIQrJq++m88AVCPMMBvNTsv4+siVtDLVrwQ+1uc6UVUoRVxmenmkojyWMlgf9jDUK9YnMrfKIeEzGTHL+ijL7K86vaZTTCIXFzXu1pusXS8irFJF4JRAXrz8oV8ghoL0aS+TdQ=
