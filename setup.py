@@ -43,7 +43,7 @@ setup(
     long_description=README,
     description='{{ DESCRIPTION }}',
     author='Open Knowledge International',
-    url='https://github.com/frictionlessdata/datapackage_pipelines_elasticsearch',
+    url='https://github.com/frictionlessdata/datapackage-pipelines-elasticsearch',
     license='MIT',
     keywords=[
         'data',
