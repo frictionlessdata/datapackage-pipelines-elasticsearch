@@ -41,6 +41,7 @@ setup(
     extras_require={'develop': TESTS_REQUIRE},
     zip_safe=False,
     long_description=README,
+    long_description_content_type='text/markdown',
     description='{{ DESCRIPTION }}',
     author='Open Knowledge International',
     url='https://github.com/frictionlessdata/datapackage-pipelines-elasticsearch',

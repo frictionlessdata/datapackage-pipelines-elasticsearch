@@ -27,6 +27,19 @@ def normalize(obj):
     assert False, "Don't know how to handle object (%s) %r" % (type(obj), obj)
 
 
+class MyStorage(Storage):
+
+    def __init__(self, *args, **kw):
+        super(MyStorage, self).__init__(*args, **kw)
+
+    def generate_doc_id(self, row, primary_key):
+        ret = super(MyStorage, self).generate_doc_id(row, primary_key)
+        if len(ret.encode('utf8')) > 400:
+            logging.warning('Long document id detected (%s, %s, %s)',
+                            ret, primary_key, row)
+        return ret
+
+
 class ESDumper(DumperBase):
 
     def __init__(self, mapper_cls=None, index_settings=None):
@@ -68,7 +81,7 @@ class ESDumper(DumperBase):
             converted_resource = self.converted_resources[resource_name]
             index_name = converted_resource['index-name']
             doc_type = converted_resource['doc-type']
-            storage = Storage(self.engine)
+            storage = MyStorage(self.engine)
             logging.info('Writing to ES %s -> %s/%s (reindex: %s)',
                          resource_name, index_name, doc_type, self.reindex)
             storage.create(index_name, [(doc_type, spec['schema'])],
